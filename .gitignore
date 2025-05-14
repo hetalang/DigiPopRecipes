@@ -1,0 +1,6 @@
+# general
+Manifest.toml
+
+# Heta-specific files
+dist/
+*.log

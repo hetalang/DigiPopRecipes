@@ -3,4 +3,5 @@ Manifest.toml
 
 # Heta-specific files
 dist/
+_julia/
 *.log

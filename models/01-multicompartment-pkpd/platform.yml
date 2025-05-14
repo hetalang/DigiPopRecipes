@@ -1,0 +1,17 @@
+{
+  "builderVersion": "^0.9.3",
+  "id": "01-multicompartment-pkpd",
+  "notes": "Model from the DigiPop project to use for testing and demo.",
+  "version": "v0.1.0",
+  "license": "MIT",
+  "options": {},
+  "importModule": {
+    "type": "heta",
+    "source": "src/index.heta"
+  },
+  "export": [
+    { format: "JSON" },
+    #{ format: "Julia" },
+    { format: "Dot" }
+  ]
+}

@@ -15,7 +15,6 @@ This repository aims to:
 - `docs/`: Documentation and explanations of methods.
 - `models/`: Example QSP models used in tutorials and analyses.
 - `recipes/`: Method-specific pipelines and analysis examples.
-- `notebooks/`: (Optional) Interactive Julia or Pluto notebooks.
 
 ## Related Projects
 
@@ -28,4 +27,5 @@ Contributions and discussions are welcome! Please open an issue or pull request 
 
 ## License
 
-MIT License. See [`LICENSE`](LICENSE) for details.
+- Code in this repository is licensed under the MIT License, see [`LICENSE`](LICENSE) for details.
+- Documentation and methodological materials are licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](./LICENSE-CC-BY)

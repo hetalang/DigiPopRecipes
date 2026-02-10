@@ -1,5 +1,5 @@
-id,model,tspan,saveat[],parameters.dose1,events_save.sw1
-scn1,nameless,120,0;2;4;8;12;24;48;72;120,0,0;0
-scn2,nameless,120,0;2;4;8;12;24;48;72;120,10,0;0
-scn3,nameless,120,0;2;4;8;12;24;48;72;120,30,0;0
-scn4,nameless,120,0;2;4;8;12;24;48;72;120,100,0;0
+id,model,tspan,saveat[],parameters.dose1,events_save.sw1,observables[]
+scn1,nameless,120,0;2;4;8;12;24;48;72;120,0,0;0,drug_c;pd_output_1
+scn2,nameless,120,0;2;4;8;12;24;48;72;120,10,0;0,drug_c;pd_output_1
+scn3,nameless,120,0;2;4;8;12;24;48;72;120,30,0;0,drug_c;pd_output_1
+scn4,nameless,120,0;2;4;8;12;24;48;72;120,100,0;0,drug_c;pd_output_1

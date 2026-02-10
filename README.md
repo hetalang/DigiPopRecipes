@@ -12,9 +12,23 @@ This repository aims to:
 
 ## Contents
 
-- `docs/`: Documentation and explanations of methods.
-- `models/`: Example QSP models used in tutorials and analyses.
-- `recipes/`: Method-specific pipelines and analysis examples.
+```
+docs/                         # Documentation and explanations of methods.
+models/                       # QSP reusable model packages.
+    01-multicompartment-pkpd/ # A simple multicompartment PK/PD model.
+        src/                  # dynamic system model code.
+        tests/                # code for manual testing
+        scenarios/            # description of conditions
+        cohorts/              # population variability specifications
+            profile-1/        # specifications and code for generating sampling profile.
+    ...
+data/                         # Synthetic datasets generated from the models for analysis examples.
+    01-multicompartment-pkpd/ # Data generated from the multicompartment PK/PD model.
+        profile-1/            # a dataset for specific cohort and scenario.
+        ...
+    ...
+recipes/                      # Method-specific pipelines and analysis examples.
+```
 
 ## Related Projects
 

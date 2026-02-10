@@ -12,4 +12,4 @@ parameters_df = DataFrame(
     Emax_1 = rand(Normal(log(10.), 1e-1), N_vp) .|> exp,
     EC50_1 = rand(Normal(log(0.8), 1e-1), N_vp) .|> exp
 )
-CSV.write("models/01-multicompartment-pkpd/variability/profile-1/vp-1.csv", parameters_df)
+CSV.write("data/01-multicompartment-pkpd/profile-1/vp-parameters-1.csv", parameters_df)

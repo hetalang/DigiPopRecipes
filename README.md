@@ -18,7 +18,7 @@ This repository aims to:
 
 ## Related Projects
 
-- [DigiPopData.jl](https://github.com/insysbio/DigiPopData.jl) – A Julia package for managing clinical endpoint data used in digital population workflows.
+- [DigiPopData.jl](https://github.com/hetalang/DigiPopData.jl) – A Julia package for managing clinical endpoint data used in digital population workflows.
 - [Heta project](https://hetalang.github.io/) – An open-source initiative developing advanced tools and best practices for dynamic system modeling in pharmacology, PK/PD, QSP, and systems biology.
 
 ## Contribution

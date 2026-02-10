@@ -5,3 +5,6 @@ Manifest.toml
 dist/
 _julia/
 *.log
+
+# Project-specific files
+_drafts/

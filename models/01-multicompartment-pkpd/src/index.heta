@@ -43,8 +43,9 @@ dose1 @Const = 10;
 
 /* pharmacodynamic part */
 
-pd_output_1 @Record {output: true} := Emax_1 * drug_t^h_1/(drug_t^h_1 + EC50_1^h_1);
+pd_output_1 @Record {output: true} := Emin_1 + Emax_1 * drug_t^h_1/(drug_t^h_1 + EC50_1^h_1);
 
+Emin_1 @Const = 5;  // variation
 Emax_1 @Const = 10;  // variation
 h_1 @Const = 1.2; 
 EC50_1 @Const = 0.8; // variation

@@ -33,10 +33,10 @@ kdist_t @Const = 1e-2; // variation
 K_t @Const = 2.5;
 
 /* doses */
-
+period1 @Const = 12;
 sw1 @TimeSwitcher {
   start: 0,
-  period: 12
+  period: period1
 };
 drug_gut [sw1]= dose1;
 dose1 @Const = 10;

@@ -49,3 +49,7 @@ Emin_1 @Const = 5;  // variation
 Emax_1 @Const = 10;  // variation
 h_1 @Const = 1.2; 
 EC50_1 @Const = 0.8; // variation
+
+/* noise */
+sigma1 @Const = 0.5; // variation
+sigma2 @Const = 0.5; // variation

@@ -1,5 +1,13 @@
 # Documentation
 
+This section contains practical strategies and methods for generating virtual populations (VPop) in QSP and related modeling workflows.
+
+## Strategies
+
+Each strategy describes a general workflow (meta-approach), including key steps, assumptions, and possible variations.
+
+- [Strategy 1: Generate, Filter, Select](generate-filter-select-strategy.md)
+
 ## Authors
 
 - Evgeny Metelkin

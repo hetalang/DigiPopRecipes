@@ -1,5 +1,7 @@
 # Generate, Filter, Select
 
+> This is draft description of the strategy in Russian. It will be translated to English later.
+
 ## Входные данные
 
 - QSP модель как система дивверенциальных уравнений (ODEs) с параметрами, занчения которых на данном этапе определены как начальные значения (initial guesses).

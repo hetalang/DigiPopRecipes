@@ -1,96 +1,96 @@
 # Generate, Filter, Select
 
-> Это черновое описание стратегии на русском языке. Позднее документ будет переведён на английский.
+> Draft document. This strategy may change as the workflow is developed.
 
-## О чем это
+## Overview
 
-Здесь описан один из вариантов стратегии создания виртуальной популяции (virtual population). Другие стратегии будут описаны в отдельных документах.
+This document describes one strategy for creating a virtual population. Other strategies will be described in separate documents.
 
-## Входные данные
+## Input data
 
-- QSP-модель в виде системы обыкновенных дифференциальных уравнений (ODE) с параметрами, значения которых на данном этапе заданы как стартовые (initial guesses).
-- Наборы данных, которые условно можно разделить на следующие типы:
-  - **Parameter data** — прямые значения параметров модели: например, известные константы связывания, объёмы органов и т. д. Это фиксированные значения параметров.
-  - **Average-patient data** — наборы данных, которые модель может описывать только на уровне среднего пациента: например, средние концентрации. Такие данные не характеризуют межпациентскую вариабельность; погрешность измерений не считается её проявлением. Данные могут быть представлены как значениями в отдельные моменты времени, так и временными профилями.
-  - **Population data** — наборы данных, описывающие популяцию пациентов, обычно полученные в клинических исследованиях:
-    - **Individual data** — индивидуальные наблюдения, например концентрации в плазме каждого пациента в каждый момент времени. Наряду с измерениями следует фиксировать условия исследования, объём выборки, критерии включения и исключения и другие существенные характеристики.
-    - **Summary data** — данные без индивидуальных наблюдений: например, рассчитанные средние значения, квантили, кривые выживаемости и т. д.
-    - **Plausibility bounds** — допустимые диапазоны значений измерений или параметров. Источник таких диапазонов не всегда очевиден, однако они встречаются в литературе и реальных проектах. Например, можно задать минимально и максимально допустимую концентрацию в плазме. Эти данные позволяют исключать виртуальных пациентов и тем самым сокращать размер пула виртуальных пациентов (virtual patient pool), что может снизить вычислительные затраты.
+- A QSP model as a system of ordinary differential equations (ODEs), with parameter values that are currently used as initial guesses.
+- Data that can be divided into the following types:
+  - **Parameter data** — direct values of model parameters, such as known binding constants and organ volumes. These are fixed parameter values.
+  - **Average-patient data** — data that the model can describe only at the average-patient level, such as mean concentrations. These data do not describe between-patient variability; measurement error is not considered variability. The data can be values at individual time points or time courses.
+  - **Population data** — data describing a patient population, usually obtained in clinical studies:
+    - **Individual data** — individual observations, such as plasma concentrations for each patient at each time point. Along with the measurements, study conditions, sample size, inclusion and exclusion criteria, and other relevant characteristics should be recorded.
+    - **Summary data** — data without individual observations, such as calculated mean values, quantiles, and survival curves.
+    - **Plausibility bounds** — acceptable ranges of measurement values or parameter values. The source of these ranges is not always clear, but they occur in the literature and in real projects. For example, minimum and maximum acceptable plasma concentrations can be defined. These data can be used to exclude virtual patients and reduce the size of the virtual patient pool, which may reduce computational cost.
 
-## Шаги
+## Steps
 
-### Классифицируем параметры
+### Classify parameters
 
-На этом этапе предполагается, что структура модели уже определена и в ходе процесса меняться не будет.
-Мы работаем только со значениями параметров или наборами значений параметров.
+At this stage, the model structure is assumed to be defined and will not change during the workflow.
+We work only with parameter values or sets of parameter values.
 
-Параметры необходимо разделить на следующие типы:
+Parameters should be divided into the following types:
 
-- **Known fixed parameter** — фиксированный известный параметр, одинаковый для всех пациентов.
-- **Unknown fixed parameter** — фиксированный неизвестный параметр, одинаковый для всех пациентов.
-- **Uninformed random parameter** — варьируемый параметр с неизвестным распределением.
-- **Mean-informed random parameter** — варьируемый параметр с известным средним значением, но неизвестным распределением.
+- **Known fixed parameter** — a fixed parameter with a known value that is the same for all patients.
+- **Unknown fixed parameter** — a fixed parameter with an unknown value that is the same for all patients.
+- **Uninformed random parameter** — a variable parameter with an unknown distribution.
+- **Mean-informed random parameter** — a variable parameter with a known mean and an unknown distribution.
 
-Следует учитывать, что у параметра типа **Mean-informed random parameter** могут быть известны и среднее значение, и распределение. В этом случае используется только среднее значение, а известное распределение игнорируется.
+A **Mean-informed random parameter** may have both a known mean and a known distribution. In this case, use only the mean and ignore the known distribution.
 
-### Готовим среднего пациента
+### Prepare the average patient
 
-Используем **Average-patient data**, **Individual data** и **Summary data**. Учитываем только средние или медианные значения и игнорируем вариабельность.
-Фиксируем **Known fixed parameter** и **Mean-informed random parameter**.
-Оцениваем **Unknown fixed parameter** и **Uninformed random parameter** путём подгонки модели (fitting).
+Use **Average-patient data**, **Individual data**, and **Summary data**. Use only mean or median values and ignore variability.
+Fix **Known fixed parameter** and **Mean-informed random parameter**.
+Estimate **Unknown fixed parameter** and **Uninformed random parameter** by model fitting.
 
-Проверяем качество подгонки. Если оно приемлемо, переходим к следующему шагу. В противном случае возвращаемся к предыдущим этапам или пересматриваем модель.
+Check the quality of the model fit. If it is acceptable, continue to the next step. Otherwise, return to earlier steps or revise the model.
 
-### Анализируем чувствительность
+### Analyze sensitivity
 
-Используем оценённые параметры как начальные или средние значения и проводим анализ чувствительности.
-Ранжируем параметры по влиянию на выходы модели, учитывая различия в порядках величин и шкалах параметров.
-Необходимо привести параметры к сопоставимому масштабу, например с помощью логарифмирования, нормализации или других подходящих преобразований.
+Use the estimated parameters as initial or mean values and perform sensitivity analysis.
+Rank the parameters by their effect on model outputs, taking into account differences in parameter scales and orders of magnitude.
+Parameters should be transformed to a comparable scale, for example by log transformation, normalization, or other suitable transformations.
 
-Ранжируем параметры от наиболее чувствительных к наименее чувствительным.
-Выбираем N наиболее чувствительных параметров. Значение N можно определить, например, как 10 параметров, если последующие шаги вычислительно затратны, или как заданный квантиль, например 10 %. Остальные параметры фиксируем на оптимальных значениях, полученных на предыдущем этапе.
+Rank the parameters from most sensitive to least sensitive.
+Select N most sensitive parameters. N can be set to, for example, 10 parameters when later steps are computationally expensive, or to a chosen quantile, such as 10%. Fix the remaining parameters at the optimal values obtained in the previous step.
 
-> Требует уточнения, следует ли проводить анализ чувствительности только относительно экспериментальных данных или также относительно предсказательных выходов модели.
+> It needs to be clarified whether sensitivity analysis should be performed only for experimental data or also for predictive model outputs.
 
-В результате получаем следующие группы параметров:
+The result is the following parameter groups:
 
-- Фиксированные параметры: **Known fixed parameter**, значения которых известны изначально; **Unknown fixed parameter**, оценённые для среднего пациента; а также параметры, зафиксированные из-за отсутствия существенного влияния на выходы модели.
-- Варьируемые параметры: выбранные **Uninformed random parameter** и **Mean-informed random parameter**. Всего выбирается N параметров; их средние значения приблизительно известны из модели среднего пациента.
+- Fixed parameters: **Known fixed parameter** values are known from the start; **Unknown fixed parameter** values are estimated for the average patient; other parameters are fixed because they have no important effect on model outputs.
+- Variable parameters: the selected **Uninformed random parameter** and **Mean-informed random parameter**. A total of N parameters are selected; their mean values are approximately known from the average-patient model.
 
-### Генерируем пул виртуальных пациентов
+### Generate a virtual patient pool
 
-Для каждого из N варьируемых параметров задаём распределение. Возможны различные варианты, однако на данном этапе разумным выбором представляется логнормальное распределение с заданным средним и достаточно широким разбросом, отражающим неопределённость.
+Define a distribution for each of the N selected variable parameters. Different choices are possible, but at this stage a lognormal distribution with the selected mean and a sufficiently wide spread seems reasonable because it reflects uncertainty.
 
-Выполняем моделирование методом Монте-Карло: генерируем M виртуальных пациентов (virtual patients), случайно выбирая значения варьируемых параметров из заданных распределений. Выбор M неочевиден; ориентиром может быть не менее 10^4 пациентов, однако следует учитывать доступные ресурсы и время, необходимое для последующих шагов.
+Use Monte Carlo simulation to generate M virtual patients by randomly sampling the values of the variable parameters from the specified distributions. The choice of M is not obvious. A useful starting point may be at least 10^4 patients, but available resources and the time needed for later steps should be considered.
 
-На этом этапе формируется пул виртуальных пациентов (virtual patient pool). Выводить и сохранять следует только виртуальные наблюдения (virtual observations), относящиеся к **Individual data** и **Summary data**, поскольку они будут использоваться при отборе. Кроме того, необходимо сохранить все варьируемые параметры, чтобы позднее анализировать их распределения в отобранной виртуальной популяции или строить предсказания.
+At this stage, a virtual patient pool is created. Save only virtual observations relevant to **Individual data** and **Summary data**, because they will be used for selection. Also save all variable parameters so that their distributions in the selected virtual population can later be analyzed or used for prediction.
 
-### Фильтруем пул виртуальных пациентов
+### Filter the virtual patient pool
 
-Используем **Plausibility bounds** для фильтрации пула виртуальных пациентов.
+Use **Plausibility bounds** to filter the virtual patient pool.
 
-Получаем отфильтрованную виртуальную популяцию размером m < M.
-Назовём её правдоподобной виртуальной популяцией (plausible virtual population).
+This produces a filtered virtual population of size m < M.
+Call it a plausible virtual population.
 
-### Отбираем оптимальную виртуальную популяцию
+### Select the optimal virtual population
 
-Задаём размер виртуальной популяции, которую хотим получить: например, k = 100 < m. Наша задача — выбрать из правдоподобной виртуальной популяции подмножество из k виртуальных пациентов, которое наилучшим образом описывает **Individual data** и **Summary data**.
+Set the target size of the virtual population, for example k = 100 < m. The task is to select a subset of k virtual patients from the plausible virtual population that best describes **Individual data** and **Summary data**.
 
-Подход к **Individual data** пока требует уточнения.
+The approach for **Individual data** still needs to be clarified.
 
-- Можно преобразовать их в сводные метрики, то есть в **Summary data**.
-- Можно разработать метрику, сопоставляющую индивидуальные данные с предсказаниями модели для каждого виртуального пациента.
+- **Individual data** can be converted into summary metrics, that is, into **Summary data**.
+- A metric can be developed to compare individual data with model predictions for each virtual patient.
 
-Для **Summary data** уже есть код `DidiPopData.jl`.
-Соответственно, формируем функцию невязки и используем метод VPopMIP.
+Code for **Summary data** is already available in `DidiPopData.jl`.
+Then, define a residual function and use the VPopMIP method.
 
-### Проверяем качество отобранной виртуальной популяции
+### Check the quality of the selected virtual population
 
-Визуализируем:
+Visualize:
 
-1. Отобранную виртуальную популяцию и данные (best virtual population vs. data): достаточно ли хорошо достигается соответствие?
-2. Отобранную и правдоподобную виртуальные популяции (best virtual population vs. plausible virtual population): насколько алгоритм отбора улучшил соответствие данным?
+1. The selected virtual population and the data (best virtual population vs. data): does it match the data well enough?
+2. The selected and plausible virtual populations (best virtual population vs. plausible virtual population): how much does the selection algorithm improve the match to the data?
 
-### Анализируем отобранную виртуальную популяцию
+### Analyze the selected virtual population
 
-### Строим предсказания
+### Make predictions

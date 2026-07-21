@@ -50,8 +50,6 @@ Parameters should be transformed to a comparable scale, for example by log trans
 Rank the parameters from most sensitive to least sensitive.
 Select N most sensitive parameters. N can be set to, for example, 10 parameters when later steps are computationally expensive, or to a chosen quantile, such as 10%. Fix the remaining parameters at the optimal values obtained in the previous step.
 
-> It needs to be clarified whether sensitivity analysis should be performed only for experimental data or also for predictive model outputs.
-
 The result is the following parameter groups:
 
 - Fixed parameters: **Known fixed parameter** values are known from the start; **Unknown fixed parameter** values are estimated for the average patient; other parameters are fixed because they have no important effect on model outputs.
@@ -67,10 +65,11 @@ At this stage, a virtual patient pool is created. Save only virtual observations
 
 ### Filter the virtual patient pool
 
-Use **Plausibility bounds** to filter the virtual patient pool.
+Filter the initial virtual patient pool using **Plausibility bounds**. A virtual patient passes the filter if its relevant virtual observations are within the required bounds.
 
 This produces a filtered virtual population of size m < M.
 Call it a plausible virtual population.
+We expect the plausible virtual population to contain enough virtual patients for the selection step.
 
 ### Select the optimal virtual population
 
@@ -93,4 +92,14 @@ Visualize:
 
 ### Analyze the selected virtual population
 
+Analyze the distributions of variable parameters in the selected virtual population. Compare them with the distributions in the initial virtual patient pool and the plausible virtual population.
+
 ### Make predictions
+
+Run the selected virtual population under the scenarios of interest. Summarize the predicted virtual observations using mean values, medians, quantiles, or response frequencies. When independent data are available, compare them with the predictions.
+
+## Limitations
+
+1. The same data may be used for model fitting, virtual population selection, and quality assessment. Independent validation data are needed to assess overfitting.
+2. Parameters fitted to mean or median data are treated as population mean parameters. This assumption may be incorrect for nonlinear QSP models.
+3. Parameter distributions are chosen with limited information. Broad lognormal distributions, ignored known distributions, and missing parameter correlations may produce an implausible virtual patient pool.
